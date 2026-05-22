@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "609766365333",
+    "project_id": "smart-table-service",
+    "storage_bucket": "smart-table-service.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:609766365333:android:3fea808991c7e52ff9e39c",
+        "android_client_info": {
+          "package_name": "com.moses.smarttableservice"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDvR4LUCKAZancGoNGLaA36dDNhLuIpku4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
