@@ -11,15 +11,25 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SmartTableService">
+
+        <activity android:name=".activities.ManagerDashboardActivity" />
+        <activity android:name=".activities.WaiterDashboardActivity" />
+        <activity android:name=".activities.KitchenDashboardActivity" />
+        <activity android:name=".activities.RegisterActivity" />
+        <activity android:name=".activities.LoginActivity" />
+
         <activity
-            android:name=".MainActivity"
+            android:name=".activities.SplashActivity"
             android:exported="true">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
+
     </application>
 
 </manifest>
