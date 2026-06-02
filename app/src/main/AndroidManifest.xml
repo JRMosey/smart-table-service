@@ -16,10 +16,9 @@
         <activity android:name=".activities.WaiterDashboardActivity" />
         <activity android:name=".activities.KitchenDashboardActivity" />
         <activity android:name=".activities.RegisterActivity" />
-        <activity android:name=".activities.LoginActivity" />
 
         <activity
-            android:name=".activities.SplashActivity"
+            android:name=".activities.LoginActivity"
             android:exported="true">
 
             <intent-filter>
