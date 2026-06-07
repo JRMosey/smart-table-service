@@ -2,4 +2,32 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!-- Primary palette -->
+    <color name="colorPrimary">#2563EB</color>
+    <color name="colorPrimaryDark">#1D4ED8</color>
+    <color name="colorPrimaryLight">#EFF6FF</color>
+    <color name="colorOnPrimary">#FFFFFF</color>
+
+    <!-- Backgrounds -->
+    <color name="colorBackground">#F1F5F9</color>
+    <color name="colorSurface">#FFFFFF</color>
+
+    <!-- Text -->
+    <color name="colorTextPrimary">#1E293B</color>
+    <color name="colorTextSecondary">#64748B</color>
+    <color name="colorTextHint">#9CA3AF</color>
+
+    <!-- Role colors -->
+    <color name="colorManager">#7C3AED</color>
+    <color name="colorManagerLight">#F5F3FF</color>
+    <color name="colorWaiter">#059669</color>
+    <color name="colorWaiterLight">#F0FDF4</color>
+    <color name="colorKitchen">#D97706</color>
+    <color name="colorKitchenLight">#FFFBEB</color>
+
+    <!-- Status -->
+    <color name="colorError">#DC2626</color>
+    <color name="colorErrorLight">#FEE2E2</color>
+    <color name="colorDivider">#E2E8F0</color>
 </resources>

@@ -1,4 +1,9 @@
 package com.moses.smarttableservice.models
 
-class User {
-}
+data class User(
+    val uid: String = "",
+    val name: String = "",
+    val email: String = "",
+    val role: String = "",
+    val createdAt: Long = 0L
+)
