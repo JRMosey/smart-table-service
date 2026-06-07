@@ -10,6 +10,8 @@ The Statistics Dashboard will help restaurant managers monitor restaurant perfor
 
 Since the final UI/UX is not ready yet, this document defines the dashboard metrics, required collections, calculation logic, and Firebase fields needed for development.
 
+Janvi will work on the Statistics Dashboard UI and dashboard layouts. This document focuses on the non-UI statistics logic and data structure.
+
 ## Collections Needed
 
 The Statistics Dashboard will mainly use:
@@ -19,22 +21,47 @@ The Statistics Dashboard will mainly use:
 - menuItems
 - orders
 - payments
+- notifications
+- restaurantSettings
 
-## Dashboard Metrics
+## Confirmed Firebase Structure Notes
+
+The team confirmed the shared Firebase structure for:
+
+- users
+- tables
+- menuItems
+- orders
+- payments
+- notifications
+- restaurantSettings
+
+The team also confirmed that `addOns` should be used instead of `addOn` because it represents a list.
+
+Revenue should be calculated from `payments.amountPaid` only when payment status is `paid` or `completed`.
+
+## Sprint 2 Priority Metrics
+
+For Sprint 2, the Statistics Dashboard will focus first on:
 
 | Metric | Collection | Logic |
 |---|---|---|
-| Total Revenue | payments | Sum amountPaid where status is paid/completed |
-| Daily Orders | orders | Count orders grouped by createdAt date |
-| Total Orders | orders | Count all orders in selected date range |
+| Total Revenue | payments | Sum amountPaid where payment status is paid or completed |
+| Total Orders | orders | Count orders where status is not cancelled |
 | Average Order Value | payments/orders | totalRevenue divided by totalOrders |
 | Occupied Tables | tables | Count tables where status is occupied |
-| Available Tables | tables | Count tables where status is available |
+| Payment Method Totals | payments | Group successful payments by method and sum amountPaid |
+
+## Optional Metrics If Time Permits
+
+| Metric | Collection | Logic |
+|---|---|---|
+| Tips Collected | payments | Sum tip values where payment status is paid or completed |
+| Tax Collected | orders | Sum taxAmount where order status is paid |
 | Top Selling Items | orders.items | Group items by itemId/name and sum quantity |
-| Sales by Category | orders.items | Group by category and sum itemTotal |
-| Payment Method Report | payments | Group payments by method |
-| Tips Collected | payments | Sum tip values |
-| Tax Collected | orders | Sum taxAmount |
+| Daily Orders | orders | Count orders grouped by createdAt date |
+| Available Tables | tables | Count tables where status is available |
+| Sales by Category | orders/menuItems | Use itemId to read category from menuItems |
 
 ## Required Fields
 
@@ -50,6 +77,7 @@ The Statistics Dashboard will mainly use:
 - taxAmount
 - discountAmount
 - total
+- notes
 - createdAt
 - updatedAt
 
@@ -69,34 +97,73 @@ The Statistics Dashboard will mainly use:
 
 - tableId
 - tableNumber
+- name
 - capacity
 - status
 - currentOrderId
 - assignedWaiterId
 
-### orderItem
-
-Recommended fields:
+### menuItems
 
 - itemId
 - name
+- description
+- price
 - category
+- imageUrl
+- isAvailable
+- addOns
+
+### orderItem
+
+Required fields based on the shared structure:
+
+- itemId
+- name
 - quantity
 - unitPrice
-- itemTotal
 - addOns
 - notes
 - kitchenStatus
 
-## Suggested Improvements
+## Confirmed Status Values
 
-For better analytics, `orderItem` should include `category` and `itemTotal`.
+### Order Status
 
-`category` is useful for category-wise sales reports.
+- pending
+- preparing
+- ready
+- served
+- paid
+- cancelled
 
-`itemTotal` is useful for calculating item sales without recalculating quantity multiplied by price every time.
+### Payment Status
 
-Revenue should be calculated mainly from successful payments, not only from orders, because cancelled or unpaid orders should not count as real revenue.
+- pending
+- paid
+- completed
+- refunded
+- failed
+
+### Table Status
+
+- available
+- occupied
+- reserved
+- cleaning
+
+## Suggested Future Improvements
+
+For easier dashboard analytics later, the team can consider adding optional fields inside `orderItem`:
+
+- category
+- itemTotal
+
+`category` would make category-wise sales reports easier without repeatedly reading from `menuItems`.
+
+`itemTotal` would make item-level revenue calculations easier without recalculating quantity multiplied by unit price.
+
+These fields are not required for the current confirmed structure, but they can improve dashboard performance and reporting later.
 
 ## Sprint 2 Scope
 
@@ -105,7 +172,8 @@ For Sprint 2, the Statistics Dashboard work will focus on:
 - defining dashboard KPIs
 - confirming required Firebase fields
 - preparing calculation logic
-- preparing data model structure
+- preparing sample Firestore data
+- preparing non-UI data structure
 - waiting for UI/UX before building the final screen layout
 
-The final dashboard UI and charts can be connected after the UI/UX design is ready.
+The final dashboard UI and charts can be connected after Janvi’s UI/UX design is ready.

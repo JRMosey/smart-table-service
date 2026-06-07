@@ -4,7 +4,7 @@
 
 This document defines sample Firestore data that can be used to test the Statistics Dashboard before the final UI/UX is ready.
 
-The sample data follows the shared Firebase collection structure:
+The sample data follows the shared Firebase collection structure confirmed by the team:
 
 - users
 - tables
@@ -125,7 +125,7 @@ The sample data follows the shared Firebase collection structure:
   "tableId": "table_001",
   "waiterId": "user_002",
   "orderType": "dine_in",
-  "status": "completed",
+  "status": "paid",
   "items": [
     {
       "itemId": "item_001",
@@ -171,7 +171,7 @@ The sample data follows the shared Firebase collection structure:
   "tableId": null,
   "waiterId": "user_002",
   "orderType": "takeout",
-  "status": "completed",
+  "status": "paid",
   "items": [
     {
       "itemId": "item_001",
@@ -239,7 +239,7 @@ The sample data follows the shared Firebase collection structure:
   "tableId": "table_001",
   "isRead": false,
   "type": "order_update",
-  "message": "Order order_001 has been completed.",
+  "message": "Order order_001 has been paid.",
   "priority": "normal",
   "createdAt": "2026-06-06T12:45:00",
   "readAt": null
@@ -275,6 +275,48 @@ The sample data follows the shared Firebase collection structure:
 }
 ```
 
+## Confirmed Status Values
+
+### Order Status
+
+- pending
+- preparing
+- ready
+- served
+- paid
+- cancelled
+
+### Payment Status
+
+- pending
+- paid
+- completed
+- refunded
+- failed
+
+### Table Status
+
+- available
+- occupied
+- reserved
+- cleaning
+
+## Sprint 2 Priority Dashboard Metrics
+
+For Sprint 2, the Statistics Dashboard should focus first on:
+
+- Total Revenue
+- Total Orders
+- Average Order Value
+- Occupied Tables
+- Payment Method Totals
+
+If time permits, the dashboard can also prepare:
+
+- Tips
+- Tax
+- Top-Selling Items
+
 ## Expected Dashboard Results From Sample Data
 
 | Metric | Expected Result |
@@ -293,7 +335,7 @@ The sample data follows the shared Firebase collection structure:
 
 ## Dashboard Notes
 
-This sample data follows the shared Firebase structure.
+This sample data follows the shared Firebase structure confirmed by the team.
 
 The timestamp values are written as readable ISO strings in this document, but in Firestore they should be stored as timestamp fields.
 
@@ -304,6 +346,8 @@ The addOns field is used instead of addOn because it represents a list of add-on
 The restaurantSettings document uses restaurantSettings/main as the document path, so settingsId is not required inside the document.
 
 Receipt and printer fields are optional because printing may be a later or bonus feature.
+
+Revenue should be calculated from payments.amountPaid only when the payment status is paid or completed.
 
 For dashboard analytics, category can be read from menuItems using itemId.
 

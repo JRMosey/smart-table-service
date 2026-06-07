@@ -4,7 +4,31 @@
 
 This document defines the calculation logic for the Statistics Dashboard before the final UI/UX is ready.
 
-The dashboard will use Firebase Firestore data from orders, payments, tables, menuItems, and users.
+The dashboard will use Firebase Firestore data from:
+
+- orders
+- payments
+- tables
+- menuItems
+- users
+
+The logic is based on the Firebase structure and status values confirmed by the team.
+
+## Sprint 2 Priority Metrics
+
+For Sprint 2, the Statistics Dashboard will focus first on:
+
+- Total Revenue
+- Total Orders
+- Average Order Value
+- Occupied Tables
+- Payment Method Totals
+
+If time permits, the dashboard can also prepare:
+
+- Tips Collected
+- Tax Collected
+- Top-Selling Items
 
 ## KPI Calculations
 
@@ -14,7 +38,11 @@ Collection: payments
 
 Logic:
 
-totalRevenue = sum(amountPaid) where status is paid or completed
+Revenue should be calculated from successful payments only.
+
+Formula:
+
+totalRevenue = sum(amountPaid) where payment status is paid or completed
 
 Required fields:
 
@@ -22,19 +50,12 @@ Required fields:
 - status
 - paidAt
 
-### Daily Orders
+Valid payment statuses for revenue:
 
-Collection: orders
+- paid
+- completed
 
-Logic:
-
-dailyOrders = count(orderId) grouped by createdAt date
-
-Required fields:
-
-- orderId
-- createdAt
-- status
+---
 
 ### Total Orders
 
@@ -42,9 +63,11 @@ Collection: orders
 
 Logic:
 
-totalOrders = count(orderId) in selected date range
+Count all valid orders in the selected date range.
 
-Cancelled orders should not be counted if the dashboard is showing completed business activity.
+Formula:
+
+totalOrders = count(orderId) where order status is not cancelled
 
 Required fields:
 
@@ -52,25 +75,53 @@ Required fields:
 - status
 - createdAt
 
+Excluded status:
+
+- cancelled
+
+---
+
 ### Average Order Value
 
 Collections: payments and orders
 
 Logic:
 
+Average amount earned per valid order.
+
+Formula:
+
 averageOrderValue = totalRevenue / totalOrders
 
 Required fields:
 
+From payments:
+
 - amountPaid
+- status
+- orderId
+
+From orders:
+
 - orderId
 - status
+- createdAt
+
+Note:
+
+If totalOrders is 0, averageOrderValue should be 0 to avoid division errors.
+
+---
 
 ### Occupied Tables
 
 Collection: tables
 
 Logic:
+
+Count tables where status is occupied.
+
+Formula:
 
 occupiedTables = count(tableId) where status is occupied
 
@@ -79,66 +130,19 @@ Required fields:
 - tableId
 - status
 
-### Available Tables
+---
 
-Collection: tables
-
-Logic:
-
-availableTables = count(tableId) where status is available
-
-Required fields:
-
-- tableId
-- status
-
-### Top Selling Items
-
-Collection: orders
-
-Nested data: orders.items
-
-Logic:
-
-Group order items by itemId or name and sum quantity.
-
-quantitySold = sum(quantity) grouped by itemId
-
-Required fields inside orderItem:
-
-- itemId
-- name
-- quantity
-- unitPrice
-- itemTotal
-
-### Sales by Category
-
-Collection: orders
-
-Nested data: orders.items
-
-Logic:
-
-categorySales = sum(itemTotal) grouped by category
-
-Required fields inside orderItem:
-
-- category
-- itemTotal
-- quantity
-
-Note:
-
-The category field should be copied into orderItem when the order is created. This makes dashboard reporting easier because the dashboard will not need to fetch menuItems again for every order.
-
-### Payment Method Report
+### Payment Method Totals
 
 Collection: payments
 
 Logic:
 
-paymentMethodTotal = sum(amountPaid) grouped by method
+Group successful payments by payment method and sum amountPaid.
+
+Formula:
+
+paymentMethodTotal = sum(amountPaid) grouped by method where status is paid or completed
 
 Required fields:
 
@@ -153,13 +157,64 @@ Example methods:
 - card
 - online
 
+---
+
+## Optional KPI Calculations
+
+### Daily Orders
+
+Collection: orders
+
+Logic:
+
+Count how many orders were created each day.
+
+Formula:
+
+dailyOrders = count(orderId) grouped by createdAt date
+
+Required fields:
+
+- orderId
+- createdAt
+- status
+
+Note:
+
+Cancelled orders can be excluded if the dashboard is showing business activity only.
+
+---
+
+### Available Tables
+
+Collection: tables
+
+Logic:
+
+Count tables where status is available.
+
+Formula:
+
+availableTables = count(tableId) where status is available
+
+Required fields:
+
+- tableId
+- status
+
+---
+
 ### Tips Collected
 
 Collection: payments
 
 Logic:
 
-tipsCollected = sum(tip) where status is paid or completed
+Sum all tip values from successful payments.
+
+Formula:
+
+tipsCollected = sum(tip) where payment status is paid or completed
 
 Required fields:
 
@@ -167,13 +222,23 @@ Required fields:
 - status
 - paidAt
 
+Note:
+
+If tip is missing or null, it should be treated as 0.
+
+---
+
 ### Tax Collected
 
 Collection: orders
 
 Logic:
 
-taxCollected = sum(taxAmount) where order status is completed
+Sum tax amount from valid paid orders.
+
+Formula:
+
+taxCollected = sum(taxAmount) where order status is paid
 
 Required fields:
 
@@ -181,9 +246,76 @@ Required fields:
 - status
 - createdAt
 
-## Status Values Needed
+---
 
-The team should confirm common status values.
+### Top-Selling Items
+
+Collection: orders
+
+Nested data:
+
+orders.items
+
+Logic:
+
+Group ordered items by itemId or name and sum their quantities.
+
+Formula:
+
+quantitySold = sum(quantity) grouped by itemId
+
+Required fields inside orderItem:
+
+- itemId
+- name
+- quantity
+- unitPrice
+
+Optional future field:
+
+- itemTotal
+
+Note:
+
+The team structure does not currently require itemTotal inside orderItem. If needed later, itemTotal can be added to make item-level revenue calculations easier.
+
+---
+
+### Sales by Category
+
+Collections:
+
+- orders
+- menuItems
+
+Logic:
+
+The dashboard can read item category from menuItems using itemId.
+
+Formula:
+
+categorySales = sum(quantity * unitPrice) grouped by category
+
+Required fields:
+
+From orders.items:
+
+- itemId
+- quantity
+- unitPrice
+
+From menuItems:
+
+- itemId
+- category
+
+Optional future improvement:
+
+The team can copy category into each orderItem when the order is created to make category-wise reports faster and easier.
+
+---
+
+## Confirmed Status Values
 
 ### Order Status
 
@@ -191,7 +323,7 @@ The team should confirm common status values.
 - preparing
 - ready
 - served
-- completed
+- paid
 - cancelled
 
 ### Payment Status
@@ -199,8 +331,8 @@ The team should confirm common status values.
 - pending
 - paid
 - completed
-- failed
 - refunded
+- failed
 
 ### Table Status
 
@@ -209,14 +341,14 @@ The team should confirm common status values.
 - reserved
 - cleaning
 
-## Sprint 2 Scope
+## Important Notes
 
-This document supports the Sprint 2 Statistics Dashboard task by defining:
+Revenue should be calculated from payments.amountPaid only when payment status is paid or completed.
 
-- dashboard KPIs
-- Firebase collections needed
-- calculation formulas
-- required fields
-- status values needed for reporting
+Order status should use paid for paid/completed orders because completed is not part of the confirmed order status list.
+
+Cancelled orders should not be included in completed business statistics.
 
 The final UI and chart layout will be added after the UI/UX design is ready.
+
+Janvi will work on the Statistics Dashboard UI. This logic can be connected to the dashboard layout once the UI is available.
