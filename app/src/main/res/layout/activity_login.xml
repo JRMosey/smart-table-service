@@ -1,35 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="24dp"
-    android:gravity="center">
+    android:background="#F4F6F8"
+    android:fillViewport="true">
 
-    <EditText
-        android:id="@+id/edtLoginEmail"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Email"
-        android:inputType="textEmailAddress" />
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="24dp">
 
-    <EditText
-        android:id="@+id/edtLoginPassword"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Password"
-        android:inputType="textPassword" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Smart Table"
+            android:textSize="32sp"
+            android:textStyle="bold"
+            android:textColor="#111827" />
 
-    <Button
-        android:id="@+id/btnLogin"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Login" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Restaurant Management System"
+            android:textSize="14sp"
+            android:textColor="#6B7280"
+            android:layout_marginBottom="32dp" />
 
-    <Button
-        android:id="@+id/btnGoToRegister"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Create account" />
+        <EditText
+            android:id="@+id/edtLoginEmail"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:hint="Email"
+            android:inputType="textEmailAddress"
+            android:padding="12dp"
+            android:background="@android:drawable/edit_text"
+            android:layout_marginBottom="12dp" />
 
-</LinearLayout>
+        <EditText
+            android:id="@+id/edtLoginPassword"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:hint="Password"
+            android:inputType="textPassword"
+            android:padding="12dp"
+            android:background="@android:drawable/edit_text"
+            android:layout_marginBottom="20dp" />
+
+        <Button
+            android:id="@+id/btnLogin"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:text="Login" />
+
+        <Button
+            android:id="@+id/btnGoToRegister"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:text="Create account"
+            android:layout_marginTop="8dp" />
+
+    </LinearLayout>
+
+</ScrollView>
