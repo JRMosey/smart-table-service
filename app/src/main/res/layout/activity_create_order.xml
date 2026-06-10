@@ -12,9 +12,10 @@
         android:padding="24dp">
 
         <TextView
+            android:id="@+id/tvSelectedTable"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Waiter Dashboard"
+            android:text="Create Order"
             android:textColor="#111827"
             android:textSize="28sp"
             android:textStyle="bold" />
@@ -22,32 +23,34 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Tables and active orders"
+            android:text="Select menu items"
             android:textColor="#6B7280"
             android:textSize="14sp"
             android:layout_marginBottom="24dp" />
 
-        <TextView
+        <LinearLayout
+            android:id="@+id/menuItemsContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Tables"
+            android:orientation="vertical" />
+
+        <TextView
+            android:id="@+id/tvOrderTotal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Total: $0.00"
             android:textColor="#111827"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:layout_marginBottom="12dp" />
-
-        <GridLayout
-            android:id="@+id/tableGrid"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:columnCount="2" />
+            android:gravity="end"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="16dp" />
 
         <Button
-            android:id="@+id/btnCreateOrder"
+            android:id="@+id/btnSubmitOrder"
             android:layout_width="match_parent"
             android:layout_height="52dp"
-            android:text="Create New Order"
-            android:layout_marginTop="24dp" />
+            android:text="Send Order to Kitchen" />
 
     </LinearLayout>
 

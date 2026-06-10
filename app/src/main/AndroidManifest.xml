@@ -16,7 +16,7 @@
         <activity android:name=".activities.WaiterDashboardActivity" />
         <activity android:name=".activities.KitchenDashboardActivity" />
         <activity android:name=".activities.RegisterActivity" />
-
+        <activity android:name=".activities.CreateOrderActivity" />
         <activity
             android:name=".activities.LoginActivity"
             android:exported="true">
