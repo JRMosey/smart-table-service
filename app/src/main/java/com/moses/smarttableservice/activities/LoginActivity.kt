@@ -23,6 +23,10 @@ class LoginActivity : AppCompatActivity() {
         binding.tvGoToRegister.setOnClickListener {
             startActivity(Intent(this, RegisterActivity::class.java))
         }
+
+        binding.tvForgotPassword.setOnClickListener {
+            android.widget.Toast.makeText(this, "Password reset coming soon.", android.widget.Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun attemptLogin() {

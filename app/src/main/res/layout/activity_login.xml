@@ -11,24 +11,25 @@
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:orientation="vertical"
-        android:padding="24dp">
+        android:paddingHorizontal="24dp"
+        android:paddingBottom="32dp">
 
         <!-- Logo -->
         <com.google.android.material.card.MaterialCardView
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_marginTop="48dp"
+            android:layout_width="88dp"
+            android:layout_height="88dp"
+            android:layout_marginTop="56dp"
             android:layout_marginBottom="16dp"
-            app:cardBackgroundColor="@color/colorTextPrimary"
-            app:cardCornerRadius="20dp"
-            app:cardElevation="8dp">
+            app:cardBackgroundColor="@color/colorPrimary"
+            app:cardCornerRadius="24dp"
+            app:cardElevation="10dp">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:text="🍽️"
-                android:textSize="36sp" />
+                android:textSize="38sp" />
 
         </com.google.android.material.card.MaterialCardView>
 
@@ -37,24 +38,26 @@
             android:layout_height="wrap_content"
             android:text="@string/app_title"
             android:textColor="@color/colorTextPrimary"
-            android:textSize="32sp"
+            android:textSize="30sp"
             android:textStyle="bold" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="32dp"
+            android:layout_marginBottom="36dp"
             android:text="@string/app_subtitle"
             android:textColor="@color/colorTextSecondary"
             android:textSize="14sp" />
 
-        <!-- Card -->
+        <!-- Login Card -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cardBackgroundColor="@color/white"
             app:cardCornerRadius="20dp"
-            app:cardElevation="4dp">
+            app:cardElevation="4dp"
+            app:strokeColor="@color/colorDivider"
+            app:strokeWidth="1dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -85,7 +88,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
-                    android:hint="@string/hint_email">
+                    android:hint="@string/hint_email"
+                    app:startIconDrawable="@drawable/ic_email"
+                    app:startIconTint="@color/colorTextSecondary">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etEmail"
@@ -103,9 +108,11 @@
                     style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
+                    android:layout_marginBottom="4dp"
                     android:hint="@string/hint_password"
-                    app:endIconMode="password_toggle">
+                    app:endIconMode="password_toggle"
+                    app:startIconDrawable="@drawable/ic_lock"
+                    app:startIconTint="@color/colorTextSecondary">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etPassword"
@@ -117,13 +124,25 @@
 
                 </com.google.android.material.textfield.TextInputLayout>
 
+                <!-- Forgot Password -->
+                <TextView
+                    android:id="@+id/tvForgotPassword"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginBottom="20dp"
+                    android:padding="4dp"
+                    android:text="@string/forgot_password"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="13sp" />
+
                 <!-- Progress -->
                 <ProgressBar
                     android:id="@+id/progressBar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginVertical="8dp"
+                    android:layout_marginVertical="4dp"
                     android:visibility="gone" />
 
                 <!-- Sign In Button -->
@@ -131,7 +150,6 @@
                     android:id="@+id/btnSignIn"
                     android:layout_width="match_parent"
                     android:layout_height="52dp"
-                    android:layout_marginTop="8dp"
                     android:text="@string/btn_sign_in"
                     android:textSize="16sp"
                     android:textStyle="bold"

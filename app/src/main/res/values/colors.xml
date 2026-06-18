@@ -30,4 +30,23 @@
     <color name="colorError">#DC2626</color>
     <color name="colorErrorLight">#FEE2E2</color>
     <color name="colorDivider">#E2E8F0</color>
+
+    <!-- Dashboard header -->
+    <color name="colorHeaderBg">#1A2540</color>
+    <color name="colorHeaderText">#FFFFFF</color>
+    <color name="colorHeaderSubtext">#8A9BB5</color>
+
+    <!-- Orange accent (FAB, buttons, icon bg) -->
+    <color name="colorOrange">#FF6B00</color>
+    <color name="colorOrangeLight">#FFF3E0</color>
+
+    <!-- Table status colors -->
+    <color name="colorStatusOccupied">#3B82F6</color>
+    <color name="colorStatusOccupiedBg">#EFF6FF</color>
+    <color name="colorStatusWaiting">#F59E0B</color>
+    <color name="colorStatusWaitingBg">#FFFBEB</color>
+    <color name="colorStatusReady">#8B5CF6</color>
+    <color name="colorStatusReadyBg">#F5F3FF</color>
+    <color name="colorStatusAvailable">#22C55E</color>
+    <color name="colorStatusAvailableBg">#F0FDF4</color>
 </resources>

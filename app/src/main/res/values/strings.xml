@@ -9,6 +9,7 @@
     <string name="hint_email">Email</string>
     <string name="hint_password">Password</string>
     <string name="btn_sign_in">Sign In</string>
+    <string name="forgot_password">Forgot password?</string>
     <string name="no_account">Don\'t have an account? <b>Create one</b></string>
 
     <!-- Register -->
@@ -31,6 +32,41 @@
     <string name="no_staff_found">No staff members found</string>
     <string name="add_staff">Add Staff</string>
     <string name="loading">Loading…</string>
+
+    <!-- Manager Dashboard -->
+    <string name="dashboard_manager">Dashboard</string>
+    <string name="dashboard_waiter">My Station</string>
+    <string name="dashboard_kitchen">Kitchen Queue</string>
+    <string name="overview">Overview</string>
+    <string name="quick_actions">Quick Actions</string>
+    <string name="recent_orders">Recent Orders</string>
+    <string name="see_all">See all</string>
+    <string name="stat_orders_today">Orders Today</string>
+    <string name="stat_revenue">Revenue</string>
+    <string name="stat_active_tables">Active Tables</string>
+    <string name="action_staff">Staff</string>
+    <string name="action_orders">Orders</string>
+    <string name="action_menu">Menu</string>
+    <string name="action_reports">Reports</string>
+    <string name="no_orders_yet">No orders yet today</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="confirm_sign_out">Are you sure you want to sign out?</string>
+    <!-- Waiter Dashboard -->
+    <string name="my_tables">My Tables</string>
+    <string name="active_orders">Active Orders</string>
+    <string name="new_order">New Order</string>
+    <string name="no_tables_assigned">No tables assigned</string>
+    <string name="all_clear_orders">All clear — no active orders</string>
+    <!-- Kitchen Dashboard -->
+    <string name="filter_all">All</string>
+    <string name="filter_pending">Pending</string>
+    <string name="filter_preparing">Preparing</string>
+    <string name="filter_ready">Ready</string>
+    <string name="kitchen_all_clear">Kitchen is all caught up!</string>
+    <string name="no_orders_in_queue">No orders in this queue</string>
+    <string name="btn_start_cooking">Start Cooking</string>
+    <string name="btn_mark_ready">Mark Ready</string>
+    <string name="btn_delivered">Delivered ✓</string>
 
     <!-- Errors -->
     <string name="error_empty_fields">Please fill in all fields</string>

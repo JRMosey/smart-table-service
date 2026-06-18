@@ -21,11 +21,19 @@ class RegisterActivity : AppCompatActivity() {
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        setSupportActionBar(binding.toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.title = ""
+
         setupRoleDropdown()
 
-        binding.tvBack.setOnClickListener { finish() }
         binding.tvGoToLogin.setOnClickListener { finish() }
         binding.btnCreateAccount.setOnClickListener { attemptRegister() }
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        finish()
+        return true
     }
 
     private fun setupRoleDropdown() {
@@ -34,25 +42,23 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun attemptRegister() {
-        val name     = binding.etName.text.toString().trim()
-        val email    = binding.etEmail.text.toString().trim()
-        val password = binding.etPassword.text.toString().trim()
-        val confirm  = binding.etConfirmPassword.text.toString().trim()
+        val name        = binding.etName.text.toString().trim()
+        val email       = binding.etEmail.text.toString().trim()
+        val password    = binding.etPassword.text.toString().trim()
+        val confirm     = binding.etConfirmPassword.text.toString().trim()
         val roleDisplay = binding.actvRole.text.toString().trim()
 
-        // Clear errors
-        binding.tilName.error = null
-        binding.tilEmail.error = null
-        binding.tilPassword.error = null
+        binding.tilName.error            = null
+        binding.tilEmail.error           = null
+        binding.tilPassword.error        = null
         binding.tilConfirmPassword.error = null
-        binding.tilRole.error = null
+        binding.tilRole.error            = null
 
-        // Validate
-        if (name.isEmpty()) { binding.tilName.error = getString(R.string.error_empty_fields); return }
-        if (email.isEmpty()) { binding.tilEmail.error = getString(R.string.error_invalid_email); return }
-        if (password.length < 6) { binding.tilPassword.error = getString(R.string.error_weak_password); return }
-        if (password != confirm) { binding.tilConfirmPassword.error = getString(R.string.error_password_mismatch); return }
-        if (roleDisplay.isEmpty()) { binding.tilRole.error = getString(R.string.error_select_role); return }
+        if (name.isEmpty())          { binding.tilName.error = getString(R.string.error_empty_fields); return }
+        if (email.isEmpty())         { binding.tilEmail.error = getString(R.string.error_invalid_email); return }
+        if (password.length < 6)     { binding.tilPassword.error = getString(R.string.error_weak_password); return }
+        if (password != confirm)     { binding.tilConfirmPassword.error = getString(R.string.error_password_mismatch); return }
+        if (roleDisplay.isEmpty())   { binding.tilRole.error = getString(R.string.error_select_role); return }
 
         val role = Constants.DISPLAY_TO_ROLE[roleDisplay] ?: run {
             binding.tilRole.error = getString(R.string.error_select_role)
@@ -80,12 +86,12 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun setLoading(loading: Boolean) {
-        binding.progressBar.visibility = if (loading) View.VISIBLE else View.GONE
+        binding.progressBar.visibility    = if (loading) View.VISIBLE else View.GONE
         binding.btnCreateAccount.isEnabled = !loading
-        binding.etName.isEnabled = !loading
-        binding.etEmail.isEnabled = !loading
-        binding.etPassword.isEnabled = !loading
+        binding.etName.isEnabled           = !loading
+        binding.etEmail.isEnabled          = !loading
+        binding.etPassword.isEnabled       = !loading
         binding.etConfirmPassword.isEnabled = !loading
-        binding.actvRole.isEnabled = !loading
+        binding.actvRole.isEnabled          = !loading
     }
 }

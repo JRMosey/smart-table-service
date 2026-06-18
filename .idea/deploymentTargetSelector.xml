@@ -6,10 +6,6 @@
         <option name="selectionMode" value="DROPDOWN" />
         <DialogSelection />
       </SelectionState>
-      <SelectionState runConfigName="RegisterActivity (1)">
-        <option name="selectionMode" value="DROPDOWN" />
-        <DialogSelection />
-      </SelectionState>
       <SelectionState runConfigName="CustomerMenuActivity">
         <option name="selectionMode" value="DROPDOWN" />
         <DialogSelection />
@@ -23,6 +19,10 @@
         <DialogSelection />
       </SelectionState>
       <SelectionState runConfigName="CustomerMenuActivity (2)">
+        <option name="selectionMode" value="DROPDOWN" />
+        <DialogSelection />
+      </SelectionState>
+      <SelectionState runConfigName="KitchenDashboardActivity (1)">
         <option name="selectionMode" value="DROPDOWN" />
         <DialogSelection />
       </SelectionState>
