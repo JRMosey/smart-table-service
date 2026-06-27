@@ -7,6 +7,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.firestore.ListenerRegistration
 import com.moses.smarttableservice.R
 import com.moses.smarttableservice.models.Order
 import com.moses.smarttableservice.repositories.OrderRepository
@@ -14,7 +15,10 @@ import com.moses.smarttableservice.repositories.OrderRepository
 class KitchenDashboardActivity : AppCompatActivity() {
 
     private val orderRepository = OrderRepository()
+
     private lateinit var ordersContainer: LinearLayout
+
+    private var ordersListener: ListenerRegistration? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,42 +26,40 @@ class KitchenDashboardActivity : AppCompatActivity() {
 
         ordersContainer = findViewById(R.id.ordersContainer)
 
-        loadOrders()
+        startListeningToOrders()
     }
 
-    override fun onResume() {
-        super.onResume()
-        loadOrders()
+    override fun onDestroy() {
+        super.onDestroy()
+        ordersListener?.remove()
     }
 
-    private fun loadOrders() {
-        orderRepository.getOrders(
-            onSuccess = { orders ->
-                ordersContainer.removeAllViews()
-
-                val kitchenOrders = orders.filter {
-                    it.status == "pending" ||
-                            it.status == "preparing" ||
-                            it.status == "ready"
-                }
-
-                if (kitchenOrders.isEmpty()) {
-                    val emptyText = TextView(this)
-                    emptyText.text = "No active kitchen orders"
-                    emptyText.textSize = 18f
-                    emptyText.setTextColor(Color.GRAY)
-                    ordersContainer.addView(emptyText)
-                    return@getOrders
-                }
-
-                kitchenOrders.forEach { order ->
-                    ordersContainer.addView(createOrderView(order))
-                }
+    private fun startListeningToOrders() {
+        ordersListener = orderRepository.listenToActiveKitchenOrders(
+            onSuccess = { activeOrders ->
+                displayOrders(activeOrders)
             },
             onFailure = { exception ->
                 Toast.makeText(this, exception.message, Toast.LENGTH_SHORT).show()
             }
         )
+    }
+
+    private fun displayOrders(orders: List<Order>) {
+        ordersContainer.removeAllViews()
+
+        if (orders.isEmpty()) {
+            val emptyText = TextView(this)
+            emptyText.text = "No active kitchen orders"
+            emptyText.textSize = 18f
+            emptyText.setTextColor(Color.GRAY)
+            ordersContainer.addView(emptyText)
+            return
+        }
+
+        orders.forEach { order ->
+            ordersContainer.addView(createOrderView(order))
+        }
     }
 
     private fun createOrderView(order: Order): LinearLayout {
@@ -130,7 +132,6 @@ class KitchenDashboardActivity : AppCompatActivity() {
             status = status,
             onSuccess = {
                 Toast.makeText(this, "Order updated to $status", Toast.LENGTH_SHORT).show()
-                loadOrders()
             },
             onFailure = { exception ->
                 Toast.makeText(this, exception.message, Toast.LENGTH_SHORT).show()

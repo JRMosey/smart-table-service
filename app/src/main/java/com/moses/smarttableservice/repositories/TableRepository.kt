@@ -16,13 +16,59 @@ class TableRepository {
             .get()
             .addOnSuccessListener { result ->
                 val tables = result.documents.mapNotNull { document ->
-                    document.toObject(RestaurantTable::class.java)
+                    val table = document.toObject(RestaurantTable::class.java)
+                    table?.tableId = document.id
+                    table
                 }
+
                 onSuccess(tables)
             }
             .addOnFailureListener { exception ->
                 onFailure(exception)
             }
+    }
+
+    fun addTable(
+        table: RestaurantTable,
+        onSuccess: () -> Unit,
+        onFailure: (Exception) -> Unit
+    ) {
+        val tableId = "table_${table.tableNumber}"
+        table.tableId = tableId
+
+        db.collection(FirebaseCollections.TABLES)
+            .document(tableId)
+            .set(table)
+            .addOnSuccessListener { onSuccess() }
+            .addOnFailureListener { exception -> onFailure(exception) }
+    }
+
+    fun updateTable(
+        table: RestaurantTable,
+        onSuccess: () -> Unit,
+        onFailure: (Exception) -> Unit
+    ) {
+        if (table.tableId.isBlank()) {
+            table.tableId = "table_${table.tableNumber}"
+        }
+
+        db.collection(FirebaseCollections.TABLES)
+            .document(table.tableId)
+            .set(table)
+            .addOnSuccessListener { onSuccess() }
+            .addOnFailureListener { exception -> onFailure(exception) }
+    }
+
+    fun deleteTable(
+        tableId: String,
+        onSuccess: () -> Unit,
+        onFailure: (Exception) -> Unit
+    ) {
+        db.collection(FirebaseCollections.TABLES)
+            .document(tableId)
+            .delete()
+            .addOnSuccessListener { onSuccess() }
+            .addOnFailureListener { exception -> onFailure(exception) }
     }
 
     fun updateTableStatus(

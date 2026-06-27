@@ -1,5 +1,7 @@
 package com.moses.smarttableservice.models
 
+import com.google.firebase.firestore.PropertyName
+
 data class MenuItem(
     var itemId: String = "",
     var name: String = "",
@@ -7,5 +9,10 @@ data class MenuItem(
     var price: Double = 0.0,
     var category: String = "",
     var imageUrl: String = "",
-    var isAvailable: Boolean = true
+
+    @get:PropertyName("isAvailable")
+    @set:PropertyName("isAvailable")
+    var isAvailable: Boolean = true,
+
+    var addOns: List<AddOn> = emptyList()
 )

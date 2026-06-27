@@ -17,6 +17,10 @@
         <activity android:name=".activities.KitchenDashboardActivity" />
         <activity android:name=".activities.RegisterActivity" />
         <activity android:name=".activities.CreateOrderActivity" />
+        <activity android:name=".activities.PaymentActivity" />
+        <activity android:name=".activities.StaffManagementActivity" />
+        <activity android:name=".activities.ManageTablesActivity" />
+        <activity android:name=".activities.ManageMenuActivity" />
         <activity
             android:name=".activities.LoginActivity"
             android:exported="true">

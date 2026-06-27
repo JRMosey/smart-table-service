@@ -14,7 +14,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Kitchen Dashboard"
+            android:text="Staff Management"
             android:textColor="@color/text_main"
             android:textSize="28sp"
             android:textStyle="bold" />
@@ -23,12 +23,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
-            android:text="Incoming orders from waiters"
+            android:text="View and manage your restaurant team"
             android:textColor="@color/text_secondary"
             android:textSize="14sp" />
 
         <LinearLayout
-            android:id="@+id/ordersContainer"
+            android:id="@+id/staffContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" />
