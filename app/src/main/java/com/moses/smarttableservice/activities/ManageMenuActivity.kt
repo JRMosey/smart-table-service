@@ -1,17 +1,22 @@
 package com.moses.smarttableservice.activities
 
+import android.app.Activity
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.moses.smarttableservice.R
 import com.moses.smarttableservice.adapters.MenuItemAdapter
 import com.moses.smarttableservice.models.AddOn
@@ -24,6 +29,21 @@ class ManageMenuActivity : AppCompatActivity() {
     private lateinit var rvMenuItems: RecyclerView
     private lateinit var btnAddMenuItem: Button
     private lateinit var menuAdapter: MenuItemAdapter
+
+    private var pendingImageUri: Uri? = null
+    private var imagePreviewView: ImageView? = null
+
+    private val galleryLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val uri = result.data?.data ?: return@registerForActivityResult
+            pendingImageUri = uri
+            imagePreviewView?.let {
+                Glide.with(this).load(uri).centerCrop().into(it)
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,7 +67,7 @@ class ManageMenuActivity : AppCompatActivity() {
             onItemClick = { item -> showMenuItemDialog(item) },
             onAvailabilityChanged = { item, isAvailable ->
                 val updatedItem = item.copy(isAvailable = isAvailable)
-                menuRepository.updateMenuItem(updatedItem, { /* Success */ }, { e -> 
+                menuRepository.updateMenuItem(updatedItem, { /* Success */ }, { e ->
                     Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()
                 })
             }
@@ -68,7 +88,11 @@ class ManageMenuActivity : AppCompatActivity() {
     }
 
     private fun showMenuItemDialog(item: MenuItem?) {
+        pendingImageUri = null
+
         val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_add_menu_item, null)
+        val ivPreview = dialogView.findViewById<ImageView>(R.id.ivDishImagePreview)
+        val btnChooseImage = dialogView.findViewById<Button>(R.id.btnChooseImage)
         val etName = dialogView.findViewById<EditText>(R.id.etItemName)
         val etDesc = dialogView.findViewById<EditText>(R.id.etItemDescription)
         val etPrice = dialogView.findViewById<EditText>(R.id.etItemPrice)
@@ -76,45 +100,54 @@ class ManageMenuActivity : AppCompatActivity() {
         val addOnsContainer = dialogView.findViewById<LinearLayout>(R.id.addOnsContainer)
         val btnAddAddOn = dialogView.findViewById<Button>(R.id.btnAddAddOn)
 
-        val currentAddOns = mutableListOf<AddOn>()
-
-        fun addAddOnView(addOn: AddOn?) {
-            val view = LayoutInflater.from(this).inflate(R.layout.item_addon_edit, null)
-            val etAddOnName = view.findViewById<EditText>(R.id.etAddOnName)
-            val etAddOnPrice = view.findViewById<EditText>(R.id.etAddOnPrice)
-            val btnRemove = view.findViewById<Button>(R.id.btnRemoveAddOn)
-
-            addOn?.let {
-                etAddOnName.setText(it.name)
-                etAddOnPrice.setText(it.price.toString())
-            }
-
-            btnRemove.setOnClickListener {
-                addOnsContainer.removeView(view)
-            }
-            addOnsContainer.addView(view)
-        }
+        imagePreviewView = ivPreview
 
         item?.let {
             etName.setText(it.name)
             etDesc.setText(it.description)
             etPrice.setText(it.price.toString())
             etCategory.setText(it.category)
-            it.addOns.forEach { addOn -> addAddOnView(addOn) }
+            it.addOns.forEach { addOn -> addAddOnView(addOnsContainer, addOn) }
+            if (it.imageUrl.isNotEmpty()) {
+                Glide.with(this).load(it.imageUrl).centerCrop().placeholder(R.drawable.ic_dish_placeholder).into(ivPreview)
+            }
+        }
+
+        btnChooseImage.setOnClickListener {
+            val intent = Intent(Intent.ACTION_PICK).apply { type = "image/*" }
+            galleryLauncher.launch(intent)
         }
 
         btnAddAddOn.setOnClickListener {
-            addAddOnView(null)
+            addAddOnView(addOnsContainer, null)
         }
 
-        AlertDialog.Builder(this)
+        val dialog = AlertDialog.Builder(this)
             .setTitle(if (item == null) "Add Dish" else "Edit Dish")
             .setView(dialogView)
-            .setPositiveButton("Save") { _, _ ->
+            .setPositiveButton("Save", null)
+            .setNegativeButton("Cancel") { _, _ -> imagePreviewView = null }
+            .setNeutralButton(if (item != null) "Delete" else null) { _, _ ->
+                item?.let {
+                    menuRepository.deleteMenuItem(it.itemId, { loadMenuItems() }, { e ->
+                        Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()
+                    })
+                }
+                imagePreviewView = null
+            }
+            .create()
+
+        dialog.setOnShowListener {
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
                 val name = etName.text.toString()
                 val desc = etDesc.text.toString()
                 val price = etPrice.text.toString().toDoubleOrNull() ?: 0.0
                 val category = etCategory.text.toString()
+
+                if (name.isEmpty()) {
+                    etName.error = "Required"
+                    return@setOnClickListener
+                }
 
                 val finalAddOns = mutableListOf<AddOn>()
                 for (i in 0 until addOnsContainer.childCount) {
@@ -126,35 +159,55 @@ class ManageMenuActivity : AppCompatActivity() {
                     }
                 }
 
-                if (name.isNotEmpty()) {
-                    val newItem = item?.copy(
-                        name = name,
-                        description = desc,
-                        price = price,
-                        category = category,
-                        addOns = finalAddOns
-                    ) ?: MenuItem(
-                        name = name,
-                        description = desc,
-                        price = price,
-                        category = category,
-                        isAvailable = true,
-                        addOns = finalAddOns
-                    )
+                // TODO: upload pendingImageUri to Firebase Storage here and pass the download URL below
+                val imageUrl = item?.imageUrl ?: ""
 
-                    if (item == null) {
-                        menuRepository.addMenuItem(newItem, { loadMenuItems() }, { e -> Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show() })
-                    } else {
-                        menuRepository.updateMenuItem(newItem, { loadMenuItems() }, { e -> Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show() })
-                    }
+                val newItem = item?.copy(
+                    name = name,
+                    description = desc,
+                    price = price,
+                    category = category,
+                    addOns = finalAddOns,
+                    imageUrl = imageUrl
+                ) ?: MenuItem(
+                    name = name,
+                    description = desc,
+                    price = price,
+                    category = category,
+                    isAvailable = true,
+                    addOns = finalAddOns,
+                    imageUrl = imageUrl
+                )
+
+                if (item == null) {
+                    menuRepository.addMenuItem(newItem, { loadMenuItems() }, { e ->
+                        Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()
+                    })
+                } else {
+                    menuRepository.updateMenuItem(newItem, { loadMenuItems() }, { e ->
+                        Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()
+                    })
                 }
+                imagePreviewView = null
+                dialog.dismiss()
             }
-            .setNegativeButton("Cancel", null)
-            .setNeutralButton(if (item != null) "Delete" else null) { _, _ ->
-                item?.let {
-                    menuRepository.deleteMenuItem(it.itemId, { loadMenuItems() }, { e -> Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show() })
-                }
-            }
-            .show()
+        }
+
+        dialog.show()
+    }
+
+    private fun addAddOnView(container: LinearLayout, addOn: AddOn?) {
+        val view = LayoutInflater.from(this).inflate(R.layout.item_addon_edit, null)
+        val etAddOnName = view.findViewById<EditText>(R.id.etAddOnName)
+        val etAddOnPrice = view.findViewById<EditText>(R.id.etAddOnPrice)
+        val btnRemove = view.findViewById<Button>(R.id.btnRemoveAddOn)
+
+        addOn?.let {
+            etAddOnName.setText(it.name)
+            etAddOnPrice.setText(it.price.toString())
+        }
+
+        btnRemove.setOnClickListener { container.removeView(view) }
+        container.addView(view)
     }
 }
