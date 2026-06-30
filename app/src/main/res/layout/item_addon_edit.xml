@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="8dp"
+    android:background="@drawable/bg_card"
+    android:backgroundTint="#F8FAFC"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:padding="8dp">
+
+    <EditText
+        android:id="@+id/etAddOnName"
+        android:layout_width="0dp"
+        android:layout_height="45dp"
+        android:layout_weight="2"
+        android:background="@android:color/transparent"
+        android:hint="Option (e.g. Extra Cheese)"
+        android:inputType="textCapWords"
+        android:paddingHorizontal="8dp"
+        android:textSize="14sp" />
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="20dp"
+        android:background="@color/divider"
+        android:layout_marginHorizontal="4dp"/>
+
+    <EditText
+        android:id="@+id/etAddOnPrice"
+        android:layout_width="0dp"
+        android:layout_height="45dp"
+        android:layout_weight="1"
+        android:background="@android:color/transparent"
+        android:hint="Price"
+        android:inputType="numberDecimal"
+        android:paddingHorizontal="8dp"
+        android:textSize="14sp" />
+
+    <ImageButton
+        android:id="@+id/btnRemoveAddOn"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
+        android:src="@android:drawable/ic_menu_close_clear_cancel"
+        android:contentDescription="Remove"
+        app:tint="@color/status_danger"
+        xmlns:app="http://schemas.android.com/apk/res-auto" />
+
+</LinearLayout>

@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Dish Details"
+            android:textColor="@color/text_main"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="20dp"/>
+
+        <ImageView
+            android:id="@+id/ivDishImagePreview"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:scaleType="centerCrop"
+            android:background="@drawable/bg_card"
+            android:backgroundTint="#F1F5F9"
+            android:layout_marginBottom="8dp"
+            android:contentDescription="Dish image preview" />
+
+        <Button
+            android:id="@+id/btnChooseImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="?android:attr/borderlessButtonStyle"
+            android:text="Choose Image"
+            android:textAllCaps="false"
+            android:textColor="@color/primary"
+            android:textStyle="bold"
+            android:layout_marginBottom="12dp"/>
+
+        <EditText
+            android:id="@+id/etItemName"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="Dish Name (e.g. Classic Burger)"
+            android:inputType="textCapWords"
+            android:background="@drawable/bg_card"
+            android:backgroundTint="#F1F5F9"
+            android:paddingHorizontal="16dp"
+            android:layout_marginBottom="12dp"/>
+
+        <EditText
+            android:id="@+id/etItemDescription"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:hint="Description"
+            android:gravity="top"
+            android:paddingTop="12dp"
+            android:inputType="textMultiLine"
+            android:background="@drawable/bg_card"
+            android:backgroundTint="#F1F5F9"
+            android:paddingHorizontal="16dp"
+            android:layout_marginBottom="12dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="12dp">
+
+            <EditText
+                android:id="@+id/etItemPrice"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:hint="Price ($)"
+                android:inputType="numberDecimal"
+                android:background="@drawable/bg_card"
+                android:backgroundTint="#F1F5F9"
+                android:paddingHorizontal="16dp"
+                android:layout_marginEnd="8dp"/>
+
+            <EditText
+                android:id="@+id/etItemCategory"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:hint="Category"
+                android:inputType="textCapWords"
+                android:background="@drawable/bg_card"
+                android:backgroundTint="#F1F5F9"
+                android:paddingHorizontal="16dp"/>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/divider"
+            android:layout_marginVertical="16dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Customization Options"
+            android:textColor="@color/text_main"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:layout_marginBottom="12dp"/>
+
+        <LinearLayout
+            android:id="@+id/addOnsContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+
+        <Button
+            android:id="@+id/btnAddAddOn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="?android:attr/borderlessButtonStyle"
+            android:text="+ Add New Option"
+            android:textAllCaps="false"
+            android:textColor="@color/primary"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+</ScrollView>

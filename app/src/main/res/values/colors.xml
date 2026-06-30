@@ -1,5 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Basic Colors -->
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!-- Palette -->
+    <color name="primary">#6366F1</color> <!-- Indigo/Violet -->
+    <color name="primary_dark">#4F46E5</color>
+    <color name="background_light">#F9FAFB</color> <!-- Very pale gray -->
+
+    <!-- Text Colors -->
+    <color name="text_main">#111827</color> <!-- Dark gray/black -->
+    <color name="text_secondary">#6B7280</color> <!-- Gray -->
+
+    <!-- Status Colors -->
+    <color name="status_success">#10B981</color> <!-- Green -->
+    <color name="status_danger">#FCA5A5</color> <!-- Light Red -->
+    <color name="status_warning">#FBBF24</color> <!-- Yellow -->
+    <color name="status_info">#60A5FA</color> <!-- Light Blue -->
+    
+    <!-- Utility -->
+    <color name="divider">#E5E7EB</color>
+    <color name="card_background">#FFFFFF</color>
 </resources>
