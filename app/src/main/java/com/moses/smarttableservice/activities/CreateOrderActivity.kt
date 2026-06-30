@@ -3,10 +3,12 @@ package com.moses.smarttableservice.activities
 import android.os.Bundle
 import android.view.Gravity
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.moses.smarttableservice.R
 import com.moses.smarttableservice.models.MenuItem
@@ -78,6 +80,21 @@ class CreateOrderActivity : AppCompatActivity() {
         layout.gravity = Gravity.CENTER_VERTICAL
         layout.setPadding(16, 16, 16, 16)
         layout.setBackgroundColor(0xFFFFFFFF.toInt())
+
+        val imageSize = (64 * resources.displayMetrics.density).toInt()
+        val ivImage = ImageView(this)
+        ivImage.layoutParams = LinearLayout.LayoutParams(imageSize, imageSize).also {
+            it.marginEnd = (12 * resources.displayMetrics.density).toInt()
+        }
+        ivImage.scaleType = ImageView.ScaleType.CENTER_CROP
+        ivImage.setBackgroundColor(0xFFF1F5F9.toInt())
+        if (item.imageUrl.isNotEmpty()) {
+            Glide.with(this).load(item.imageUrl).centerCrop()
+                .placeholder(R.drawable.ic_dish_placeholder).into(ivImage)
+        } else {
+            ivImage.setImageResource(R.drawable.ic_dish_placeholder)
+        }
+        layout.addView(ivImage)
 
         val info = TextView(this)
         info.text = "${item.name}\n$${"%.2f".format(item.price)}"

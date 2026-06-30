@@ -18,6 +18,27 @@
             android:textStyle="bold"
             android:layout_marginBottom="20dp"/>
 
+        <ImageView
+            android:id="@+id/ivDishImagePreview"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:scaleType="centerCrop"
+            android:background="@drawable/bg_card"
+            android:backgroundTint="#F1F5F9"
+            android:layout_marginBottom="8dp"
+            android:contentDescription="Dish image preview" />
+
+        <Button
+            android:id="@+id/btnChooseImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="?android:attr/borderlessButtonStyle"
+            android:text="Choose Image"
+            android:textAllCaps="false"
+            android:textColor="@color/primary"
+            android:textStyle="bold"
+            android:layout_marginBottom="12dp"/>
+
         <EditText
             android:id="@+id/etItemName"
             android:layout_width="match_parent"
